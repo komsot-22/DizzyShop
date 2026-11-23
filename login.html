@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DIZZYST - Login & Register</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      body {
+        min-height: 100vh;
+        background: #050507;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .auth-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.78);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 9999;
+      }
+      .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: #11131d;
+        border: 1px solid #242838;
+        border-top: 2px solid #ff7900;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      } /* HEADER */
+      .auth-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+      .brand-info {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: #241912;
+        border: 1px solid #3c291d;
+        display: grid;
+        place-items: center;
+        font-size: 23px;
+      }
+      .auth-title {
+        font-size: 18px;
+        line-height: 1.2;
+      }
+      .auth-title span {
+        color: #ff7900;
+      }
+      .auth-subtitle {
+        margin-top: 5px;
+        color: #858a99;
+        font-size: 12px;
+      }
+      .close-btn {
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 50%;
+        background: #1d2130;
+        color: #7e8493;
+        cursor: pointer;
+        font-size: 20px;
+      }
+      .close-btn:hover {
+        color: white;
+        background: #292e40;
+      } /* TABS */
+      .auth-tabs {
+        display: flex;
+        background: #1a1d29;
+        padding: 4px;
+        border-radius: 12px;
+        margin-bottom: 22px;
+      }
+      .tab-btn {
+        flex: 1;
+        border: 0;
+        padding: 12px;
+        border-radius: 9px;
+        background: transparent;
+        color: #858a99;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .tab-btn.active {
+        color: white;
+        background: #ff7900;
+        box-shadow: 0 4px 12px rgba(255, 121, 0, 0.25);
+      } /* FORMS */
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .auth-form.hidden {
+        display: none;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .form-group label {
+        color: #d1d4dc;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .forgot-link {
+        color: #ff7900;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .forgot-link:hover {
+        text-decoration: underline;
+      } /* INPUT */
+      .input-wrapper {
+        position: relative;
+      }
+      .input-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        font-size: 14px;
+      }
+      .input-wrapper input {
+        width: 100%;
+        height: 44px;
+        padding: 0 42px 0 38px;
+        border-radius: 10px;
+        border: 1px solid #2a2e40;
+        outline: none;
+        background: #1a1d29;
+        color: white;
+        font-size: 14px;
+      }
+      .input-wrapper input::placeholder {
+        color: #777c8a;
+      }
+      .input-wrapper input:focus {
+        border-color: #ff7900;
+        box-shadow: 0 0 0 2px rgba(255, 121, 0, 0.08);
+      }
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: #6f7584;
+        cursor: pointer;
+        font-size: 15px;
+      } /* REMEMBER ME */
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #858a99;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .checkbox-container input {
+        accent-color: #ff7900;
+        cursor: pointer;
+      } /* SUBMIT */
+      .submit-btn {
+        height: 44px;
+        border: 0;
+        border-radius: 10px;
+        background: #ff7900;
+        color: white;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 7px 18px rgba(255, 121, 0, 0.22);
+      }
+      .submit-btn:hover {
+        background: #e86e00;
+      } /* MESSAGE */
+      .message {
+        display: none;
+        padding: 10px 12px;
+        border-radius: 9px;
+        font-size: 12px;
+        margin-bottom: 14px;
+        line-height: 1.4;
+      }
+      .message.show {
+        display: block;
+      }
+      .message.success {
+        background: rgba(34, 197, 94, 0.12);
+        color: #6ee7a0;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+      }
+      .message.error {
+        background: rgba(239, 68, 68, 0.12);
+        color: #ff8d8d;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      } /* DIVIDER */
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 24px 0 18px;
+        color: #525767;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        white-space: nowrap;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        background: #252938;
+        flex: 1;
+      } /* SOCIAL BUTTONS */
+      .social-buttons {
+        display: flex;
+        gap: 12px;
+      }
+      .social-btn {
+        flex: 1;
+        height: 40px;
+        border: 1px solid #2a2e40;
+        border-radius: 10px;
+        background: #1a1d29;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .social-btn:hover {
+        background: #232738;
+      }
+      .g-icon {
+        color: #ea4335;
+        margin-right: 5px;
+      } /* MOBILE */
+      @media (max-width: 480px) {
+        .auth-card {
+          padding: 22px;
+        }
+        .social-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================== AUTH MODAL =============================== -->
+    <div class="auth-modal-overlay" id="authModal">
+      <div class="auth-card">
+        <!-- HEADER -->
+        <div class="auth-header">
+          <div class="brand-info">
+            <div class="logo-icon">🍔</div>
+            <div>
+              <h2 class="auth-title">Welcome to <span>DIZZYST</span></h2>
+              <p class="auth-subtitle">
+                Sign in to manage your orders & preferences
+              </p>
+            </div>
+          </div>
+          <button type="button" class="close-btn" id="closeAuthModal">
+            &times;
+          </button>
+        </div>
+        <!-- LOGIN / REGISTER TABS -->
+        <div class="auth-tabs">
+          <button type="button" class="tab-btn active" id="loginTabBtn">
+            Login
+          </button>
+          <button type="button" class="tab-btn" id="registerTabBtn">
+            Register
+          </button>
+        </div>
+        <!-- MESSAGE -->
+        <div id="message" class="message"></div>
+        <!-- ============================== LOGIN FORM =============================== -->
+        <form id="loginForm" class="auth-form">
+          <!-- PHONE -->
+          <div class="form-group">
+            <label for="loginPhone"> Phone Number </label>
+            <div class="input-wrapper">
+              <span class="input-icon"> 📱 </span>
+              <input
+                type="tel"
+                id="loginPhone"
+                placeholder="Phone Number"
+                autocomplete="tel"
+                required
+              />
+            </div>
+          </div>
+          <!-- PASSWORD -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="loginPassword"> Password </label>
+              <a href="#" class="forgot-link" id="forgotPassword"> Forgot? </a>
+            </div>
+            <div class="input-wrapper">
+              <span class="input-icon"> 🔒 </span>
+              <input
+                type="password"
+                id="loginPassword"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleLoginPassword"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+          <!-- REMEMBER ME -->
+          <label class="checkbox-container">
+            <input type="checkbox" id="rememberMe" checked /> Remember me on
+            this device
+          </label>
+          <!-- LOGIN BUTTON -->
+          <button type="submit" class="submit-btn">Sign In ➔</button>
+        </form>
+        <!-- ============================== REGISTER FORM =============================== -->
+        <form id="registerForm" class="auth-form hidden">
+          <!-- NAME -->
+          <div class="form-group">
+            <label for="registerName"> Full Name </label>
+            <div class="input-wrapper">
+              <span class="input-icon"> 👤 </span>
+              <input
+                type="text"
+                id="registerName"
+                placeholder="Your Name"
+                required
+              />
+            </div>
+          </div>
+          <!-- PHONE -->
+          <div class="form-group">
+            <label for="registerPhone"> Phone Number </label>
+            <div class="input-wrapper">
+              <span class="input-icon"> 📱 </span>
+              <input
+                type="tel"
+                id="registerPhone"
+                placeholder="Phone Number"
+                autocomplete="tel"
+                required
+              />
+            </div>
+          </div>
+          <!-- PASSWORD -->
+          <div class="form-group">
+            <label for="registerPassword"> Password </label>
+            <div class="input-wrapper">
+              <span class="input-icon"> 🔒 </span>
+              <input
+                type="password"
+                id="registerPassword"
+                placeholder="••••••••"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleRegisterPassword"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+          <!-- CONFIRM PASSWORD -->
+          <div class="form-group">
+            <label for="confirmPassword"> Confirm Password </label>
+            <div class="input-wrapper">
+              <span class="input-icon"> 🔒 </span>
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
+          <!-- REGISTER BUTTON -->
+          <button type="submit" class="submit-btn">Create Account ➔</button>
+        </form>
+        <!-- ============================== SOCIAL LOGIN =============================== -->
+        <div class="divider">OR CONTINUE WITH</div>
+        <div class="social-buttons">
+          <button type="button" class="social-btn" id="googleBtn">
+            <span class="g-icon"> G </span> Google
+          </button>
+          <button type="button" class="social-btn" id="appleBtn">
+            🍎 Apple
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- ============================== JAVASCRIPT =============================== -->
+    <script>
+      const loginTabBtn = document.getElementById("loginTabBtn");
+      const registerTabBtn = document.getElementById("registerTabBtn");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const authModal = document.getElementById("authModal");
+      const closeAuthModal = document.getElementById("closeAuthModal");
+      const toggleLoginPassword = document.getElementById(
+        "toggleLoginPassword",
+      );
+      const loginPassword = document.getElementById("loginPassword");
+
+      const loginPhone = loginForm.querySelector(
+        'input[type="number"], input[type="tel"]',
+      );
+
+      const registerName = registerForm.querySelector('input[type="text"]');
+
+      const registerPhone = registerForm.querySelector(
+        'input[type="number"], input[type="tel"]',
+      );
+
+      const registerPassword = registerForm.querySelector(
+        'input[type="password"]',
+      );
+
+      loginTabBtn.addEventListener("click", function () {
+        loginTabBtn.classList.add("active");
+        registerTabBtn.classList.remove("active");
+
+        loginForm.classList.remove("hidden");
+        registerForm.classList.add("hidden");
+      });
+
+      registerTabBtn.addEventListener("click", function () {
+        registerTabBtn.classList.add("active");
+        loginTabBtn.classList.remove("active");
+
+        registerForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+      });
+
+      if (toggleLoginPassword && loginPassword) {
+        toggleLoginPassword.addEventListener("click", function () {
+          if (loginPassword.type === "password") {
+            loginPassword.type = "text";
+            toggleLoginPassword.textContent = "🙈";
+          } else {
+            loginPassword.type = "password";
+            toggleLoginPassword.textContent = "👁";
+          }
+        });
+      }
+
+      if (closeAuthModal) {
+        closeAuthModal.addEventListener("click", function () {
+          authModal.style.display = "none";
+        });
+      }
+
+      registerForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name = registerName.value.trim();
+        const phone = registerPhone.value.trim();
+        const password = registerPassword.value;
+
+        if (name === "" || phone === "" || password === "") {
+          alert("Please fill in all fields!");
+          return;
+        }
+
+        if (phone.length < 8) {
+          alert("Please enter a valid phone number!");
+          return;
+        }
+
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters!");
+          return;
+        }
+
+        const user = {
+          name: name,
+          phone: phone,
+          password: password,
+        };
+
+        localStorage.setItem("user", JSON.stringify(user));
+
+        alert("Registration successful! Please login.");
+
+        registerForm.reset();
+
+        loginPhone.value = phone;
+
+        loginTabBtn.click();
+      });
+
+      loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const phone = loginPhone.value.trim();
+        const password = loginPassword.value;
+
+        if (phone === "" || password === "") {
+          alert("Please enter phone number and password!");
+          return;
+        }
+
+        const savedUser = localStorage.getItem("user");
+
+        if (!savedUser) {
+          alert("No account found. Please register first.");
+          registerTabBtn.click();
+          return;
+        }
+
+        let user;
+
+        try {
+          user = JSON.parse(savedUser);
+        } catch (error) {
+          localStorage.removeItem("user");
+
+          alert("Account data is invalid. Please register again.");
+
+          registerTabBtn.click();
+          return;
+        }
+
+        if (phone === user.phone && password === user.password) {
+          localStorage.setItem("isLoggedIn", "true");
+
+          window.location.href = "Homepage.html";
+        } else {
+          alert("Incorrect phone number or password!");
+        }
+      });
+
+      const forgotLink = document.querySelector(".forgot-link");
+
+      if (forgotLink) {
+        forgotLink.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          const savedUser = localStorage.getItem("user");
+
+          if (!savedUser) {
+            alert("No account found. Please register first.");
+            return;
+          }
+
+          const user = JSON.parse(savedUser);
+
+          const phone = prompt("Enter your registered phone number:");
+
+          if (phone === null) {
+            return;
+          }
+
+          if (phone.trim() !== user.phone) {
+            alert("Phone number not found!");
+            return;
+          }
+
+          const newPassword = prompt("Enter your new password:");
+
+          if (newPassword === null) {
+            return;
+          }
+
+          if (newPassword.length < 6) {
+            alert("Password must be at least 6 characters!");
+            return;
+          }
+
+          user.password = newPassword;
+
+          localStorage.setItem("user", JSON.stringify(user));
+
+          alert("Password changed successfully!");
+        });
+      }
+
+      const rememberCheckbox = loginForm.querySelector(
+        'input[type="checkbox"]',
+      );
+
+      if (rememberCheckbox) {
+        const rememberedPhone = localStorage.getItem("rememberedPhone");
+
+        if (rememberedPhone) {
+          loginPhone.value = rememberedPhone;
+          rememberCheckbox.checked = true;
+        }
+
+        rememberCheckbox.addEventListener("change", function () {
+          if (!rememberCheckbox.checked) {
+            localStorage.removeItem("rememberedPhone");
+          }
+        });
+
+        loginPhone.addEventListener("input", function () {
+          if (rememberCheckbox.checked) {
+            localStorage.setItem("rememberedPhone", loginPhone.value);
+          }
+        });
+      }
+
+      const socialButtons = document.querySelectorAll(".social-btn");
+
+      if (socialButtons.length > 0) {
+        socialButtons[0].addEventListener("click", function () {
+          alert("Google Login needs Firebase or Google OAuth.");
+        });
+      }
+
+      if (socialButtons.length > 1) {
+        socialButtons[1].addEventListener("click", function () {
+          alert("Apple Login needs Apple OAuth.");
+        });
+      }
+    </script>
+  </body>
+</html>
