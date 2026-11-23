@@ -1,4 +1,4 @@
-// Food Products Array (Guaranteed fallback data)
+/// Food Products Array (Guaranteed fallback data)
 let products = [
   {
     id: 1,
@@ -480,72 +480,3 @@ const total = discountedSubtotal + tax;
 if (subtotalEl) subtotalEl.innerText = `$${discountedSubtotal.toFixed(2)}`;
 if (taxEl) taxEl.innerText = `$${tax.toFixed(2)}`;
 if (totalEl) totalEl.innerText = `$${total.toFixed(2)}`;
-
-document.addEventListener("DOMContentLoaded", () => {
-  fetchProducts();
-});
-
-async function fetchProducts() {
-  const productGrid = document.getElementById("product-grid");
-
-  try {
-    // Fetch products from your Node.js backend
-    const response = await fetch("http://localhost:5000/api/products");
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch products from server");
-    }
-
-    const products = await response.json();
-
-    // Clear existing content
-    productGrid.innerHTML = "";
-
-    if (products.length === 0) {
-      productGrid.innerHTML = "<p>No menu items available at the moment.</p>";
-      return;
-    }
-
-    // Loop through each product and create its HTML card
-    products.forEach((product) => {
-      const card = document.createElement("div");
-      card.classList.add("product-card");
-      card.setAttribute("data-id", product.ProductID || product.id);
-      card.setAttribute("data-name", product.Name || product.name);
-      card.setAttribute("data-price", product.Price || product.price);
-
-      card.innerHTML = `
-        <img src="${product.ImageURL || "picture/default.jpg"}" alt="${product.Name || product.name}">
-        <h3>${product.Name || product.name}</h3>
-        <p class="description">${product.Description || ""}</p>
-        <p class="price">$${parseFloat(product.Price || product.price).toFixed(2)}</p>
-        <button class="add-to-cart-btn">Add to Cart</button>
-      `;
-
-      productGrid.appendChild(card);
-    });
-
-    // Re-attach event listeners for your cart buttons after dynamic load
-    initAddToCartButtons();
-  } catch (error) {
-    console.error("Error loading products:", error);
-    productGrid.innerHTML =
-      '<p class="error">Could not load menu items. Please check if the server is running.</p>';
-  }
-}
-
-// Hook up your Add to Cart functionality
-function initAddToCartButtons() {
-  const buttons = document.querySelectorAll(".add-to-cart-btn");
-  buttons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const card = e.target.closest(".product-card");
-      const id = card.dataset.id;
-      const name = card.dataset.name;
-      const price = parseFloat(card.dataset.price);
-
-      console.log(`Added to cart: ${name} ($${price})`);
-      // Add your cart array pushing & updateCartUI() logic here
-    });
-  });
-}

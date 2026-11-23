@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DIZZY | Burgers, Drinks & Snacks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../frontend/css/style.css" />
+  </head>
+  <body>      
+    <header class="topbar">
+   <a class="brand" href="#">
+  <img src="../picture/MY logo.jpg" alt="DizzySt" class="brand-icon-img" />
+  <div class="brand-text">
+    <span class="brand-title">DIZZY<span class="accent">ST</span></span>
+    <small class="brand-tagline">GOOD FOOD • BRIGHTER MOOD</small>
+  </div>
+</a>    
+      <nav>
+        <a class="active" href="#home">Home</a><a href="#menu">Menu</a
+        ><a href="#offers">Offers</a><a href="#about">About</a
+        ><a href="#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <div class="search">
+          <i class="bi bi-search"></i>
+            <input
+            id="searchInput"
+            placeholder="Search for burgers, drinks..." />
+        </div>
+        <button class="login-btn">
+          <i class="bi bi-person">
+            <a href="login.html" class="btn-link"> Login</a></i
+          >
+        </button>
+        <button class="cart-btn" id="cartToggle">
+          <i class="bi bi-cart3"></i><b id="cartCount">0</b>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">FRESH INGREDIENTS · BOLDER TASTE</p>
+          <h1>YUMMY YUMMY<br> <em>ឆ្ញាញ់ៗ​</em>​អស់ទាស់</em></h1> <br>
+          <p class="hero-text">
+            Burgers. Drinks. Snacks. More than food — it's a mood.
+          </p>
+          <div class="hero-buttons">
+            <a href="#menu" class="primary"
+              >ORDER NOW <i class="bi bi-arrow-right"></i></a
+            ><a href="#menu" class="secondary">VIEW MENU</a>
+          </div>
+          <div class="benefits">
+            <div>
+              <i class="bi bi-leaf"></i
+              ><span
+                ><b>Fresh Ingredients</b
+                ><small>Quality you can taste</small></span
+              >
+            </div>
+            <div>
+              <i class="bi bi-truck"></i
+              ><span><b>Fast Delivery</b><small>Hot & on time</small></span>
+            </div>
+            <div>
+              <i class="bi bi-heart"></i
+              ><span
+                ><b>Loved by Thousands</b
+                ><small>4.8/5 average rating</small></span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="hero-food"><div class="food-placeholder">
+          <img src="../picture/burgur.jpg" alt=" Burger" />
+        </div></div>
+      </section>  
+
+      <section class="categories" id="menu">
+        <button class="category active" data-category="All">
+          ▦<span>All</span>
+        </button>
+        <button class="category" data-category="Burgers">
+          <img src="../picture/burgur.jpg" alt="Burgers" />
+          <span>Burgers</span>
+        </button>
+        <button class="category" data-category="Chicken">
+          <img src="../picture/chicken.jpg" alt="Chicken" />
+          <span>Chicken</span>
+        </button>
+        <button class="category" data-category="Pizza">
+          <img src="../picture/pizza.jpg" alt="Pizza" />
+          <span>Pizza</span>
+        </button>
+        <button class="category" data-category="Snacks">
+          <img src="../picture/snacks.jpg" alt="Snacks" />
+          <span>Snacks</span>
+        </button>
+        <button class="category" data-category="Fries">
+          <img src="../picture/fries.jpg" alt="Fries" />
+          <span>Fries</span>
+        </button>
+        <button class="category" data-category="Drinks">
+          <img src="../picture/drinks.jpg" alt="Drinks" />
+          <span>Drinks</span>
+        </button>
+        <button class="category" data-category="Desserts">
+          <img src="../picture/Desserts.jpg" alt="Chicken" />
+          <span>Desserts</span>
+        </button>
+      </section>
+
+      <section class="menu-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OUR MENU</p>
+            <h2>Popular Choices</h2>
+            <p>Freshly made. Always delicious.</p>
+          </div>
+          <a href="#menu">View All →</a>
+        </div>
+        <div class="layout">
+          <div class="products" id="products"></div>
+          <aside class="cart" id="cartPanel">
+            <div class="cart-title">
+              <h3><i class="bi bi-cart3"></i> Your Cart</h3>
+              <span id="cartBadge">0</span>
+            </div>
+            <div id="cartItems" class="cart-items">
+              <p class="empty">Your cart is empty.</p>
+            </div>
+            <div class="cart-total">
+              <div><span>Subtotal</span><b id="subtotal">$0.00</b></div>
+              <div><span>Tax (7%)</span><b id="tax">$0.00</b></div>
+              <hr />
+              <div class="total"><span>Total</span><b id="total">$0.00</b></div>
+            <button id="checkoutBtn" class="checkout-btn">Proceed to Checkout</button>
+            </div>
+            <div class="promo">
+              <b>Have a promo code?</b>
+              <div>
+                <input id="promo" placeholder="Enter code" /><button
+                  id="applyPromo"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="combo" id="offers">
+  <div class="promo-content">
+    <h2 class="badge">BIG PROMOTION</h2>
+    <h2 class="promo-title">Burger + Fries + Drink</h2>
+    <div class="price-container">
+      <span class="price-label">Only</span>
+      <span class="price">$8.99</span>
+    </div>
+  </div>
+
+  <div class="combo-food">
+    <div class="img-card main-card">
+      <img src="../picture/burgur.jpg" alt="Burger">
+    </div>
+    <div class="img-card side-card">
+      <img src="../picture/Fries.jpg" alt="Fries">
+    </div>
+    <div class="img-card side-card">
+      <img src="../picture/Drinks.jpg" alt="Drinks">
+      <span class="save-badge">SAVE 31%</span>
+    </div>
+  </div>
+</section>
+
+      <section class="info-grid" id="about">
+        <article>
+          <h3>What Our Customers Said</h3>
+          <div class="review">
+            <div class="avatar">KN</div>
+            <div>
+              <b>Komsot klangNas</b>
+              <div class="stars">★★★★★</div>
+              <p>
+                "Amazing burgers! Fresh ingredients and super fast delivery."
+              </p>
+            </div>
+          </div>
+        </article>
+        <article id="contact">
+          <h3><i class="bi bi-geo-alt"></i> Our Location</h3>
+          <p>271 Street,17BT,Meanchey, Phnom Penh, Cambodia</p>
+          <p>+855 965586300</p>
+          <p>komsot861@gmail.com</p>
+        </article>
+        <article>
+          <h3><i class="bi bi-clock"></i> Opening Hours</h3>
+          <p>Mon–Thu <span>10:00 AM – 10:00 PM</span></p>
+          <p>Fri–Sat <span>10:00 AM – 11:00 PM</span></p>
+          <p>Sunday <span>10:00 AM – 09:00 PM</span></p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-brand">
+        <div class="brand">
+          <a class="brand" href="#">
+          <img src="../frontend/picture/MY logo.jpg" alt="DizzySt" class="brand-icon-img" />
+          <span
+            >DIZZY<span>ST</span><small>GOOD FOOD · BRIGHTER MOOD</small></span
+          >
+        </div>
+        <p>Great food brings people together.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Contact us by Links</h4>
+
+        <a href="https://t.me/devsot2">Telegram</a
+        ><a href="https://www.facebook.com/share/1BcCeU23rh/?mibextid=wwXIfr"
+          >Facebook</a
+        ><a href="https://www.instagram.com/ksot22">Instagram</a>
+
+        <a href="https://www.youtube.com/@biteboxcambodia ">YouTube</a>
+      </div>
+      <div>
+        <h4>Follow Us</h4>
+        <p class="social">◉ ◎ ♪ ▶</p>
+      </div>
+      <div>
+        <h4>Subscribe</h4>
+        <p>Get the latest offers and updates.</p>
+        <div class="subscribe">
+          <input placeholder="Your email address" /><button>→</button>
+        </div>
+      </div>
+      <div class="copyright">© 2026 Dizzyst. All rights reserved.</div>
+    </footer> 
+
+    <script src="../frontend/js/app.js"></script>
+    <script>
+// ==========================================
+// CHECK LOGIN
+// ===ការពារគេហទំព័រដើម និងចាកចេញ
+
+
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+if (isLoggedIn !== "true") {
+    window.location.href = "login.html";
+}
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+
+  
+
+        localStorage.removeItem("isLoggedIn");
+
+        window.location.href = "login.html";
+    });
+}
+</script>
+</body>
+</html>
